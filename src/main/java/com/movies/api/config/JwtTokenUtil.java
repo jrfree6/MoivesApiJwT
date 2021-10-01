@@ -22,9 +22,9 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Component
 public class JwtTokenUtil implements Serializable {
 
-	
-	private static final long serialVersionUID = 1L;
-	private static final long JWT_TOKEN_VALIDATY = 2 * 60 * 60;
+	private static final long serialVersionUID = -7843553878175109872L;
+
+	private static final long JWT_TOKEN_VALIDATY = 5 * 60 * 60;
 	
 	@Value("${jwt.secret}")
 	private String secret;
@@ -45,6 +45,7 @@ public class JwtTokenUtil implements Serializable {
 	}
 	
 	private Claims getAllClaimsFromToken(String token) {
+		
 		return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
 	}
 	

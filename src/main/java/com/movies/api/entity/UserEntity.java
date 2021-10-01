@@ -24,7 +24,7 @@ public class UserEntity {
 	private String email;
 
 	@Column
-	private String name;
+	private String username;
 
 	@Column
 	private String password;
@@ -48,12 +48,12 @@ public class UserEntity {
 		this.email = email;
 	}
 
-	public String getName() {
-		return name;
+	public String getUserName() {
+		return username;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setUserName(String name) {
+		this.username = name;
 	}
 
 	public String getPassword() {

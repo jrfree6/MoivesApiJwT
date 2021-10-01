@@ -7,23 +7,29 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.movies.api.config.JwtTokenUtil;
 import com.movies.api.model.JwtRequest;
 import com.movies.api.model.JwtResponse;
 import com.movies.api.service.JwtUserDetailsService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 /**
  * 
  * @author jurandir
  *
  */
-
-@Controller
+@Api(value = "Authenticate")
+@RestController
+@CrossOrigin
+@RequestMapping("/user")
 public class JwtAuthenticationController {
 	
 	@Autowired
@@ -35,10 +41,19 @@ public class JwtAuthenticationController {
 	@Autowired
 	private JwtUserDetailsService userDetailsService;
 	
-	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
+	@ApiOperation(value = "Authenticate")
+	@PostMapping("/authenticate")
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
+		System.out.println("user jwt:" + authenticationRequest.getUserName());
+		System.out.println("pass jwt:" + authenticationRequest.getPassword());
+		
 		
 		authenticate(authenticationRequest.getUserName(), authenticationRequest.getPassword());
+		//Validate username/password with DB(required in case of Stateless Authentication)
+//		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+//				authenticationRequest.getUserName(), authenticationRequest.getPassword()));
+		
+		
 		final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUserName());
 		final String token = jwtTokenUtil.generateToken(userDetails);
 		return ResponseEntity.ok(new JwtResponse(token));
