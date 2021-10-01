@@ -5,6 +5,23 @@
 * Maven  
 * Git
 * h2Database
+* Docker
+
+### 🔖 How to execute?
+
+##### Clone the project
+
+```sh
+git clone git@github.com:jrfree6/MoivesApiJwT.git
+cd MoivesApiJwT
+
+docker build -t moviesapi .
+
+
+docker run -it -p 8080:8080 --name moviesapijwt-container moviesapi
+
+```
+
 
 Api Documentation:
 * http://localhost:8080/swagger-ui.html
